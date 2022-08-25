@@ -1,4 +1,4 @@
-var city = "";
+var city = ""
 
 var searchCity = $("#search-city")
 var searchButton = $("#search-button")
@@ -10,7 +10,7 @@ var currentWindSpeed = $("#wind-speed")
 var currentUvIndex = $("#uv-index")
 var sCity = [];
 
-var APIKey = "2abc5837fd5b80301226820c26666c91";
+var APIKey = "b26f77a0f941976c50cef7bdb9d7f15d";
 
 function displayWeather(event) {
     event.preventDefault();
@@ -21,7 +21,7 @@ function displayWeather(event) {
 }
 
 function currentWeather(city) {
-    var queryURL = "https://api.openweathermap.org/data/3.0/onecall?" + city + "&APPID=" + APIKey;
+    var queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + APIKey;
     $.ajax({
         url: queryURL,
         method: "GET",
@@ -58,4 +58,38 @@ function currentWeather(city) {
         }
 
     });
+}
+
+function UVIndex(ln, lt) {
+    var uvqURL = "https://api.openweathermap.org/data/3.0/uvi?appid=" + APIKey + "&lat=" + lt + "&lon=" + ln;
+    $.ajax({
+        url: uvqURL,
+        method: "GET"
+    }).then(function (response) {
+        $(currentUvindex).html(response.value);
+    });
+}
+
+function forecast(cityid) {
+    var dayover = false;
+    var queryforecastURL = "https://api.openweathermap.org/data/2.5/forecast?id=" + cityid + "&appid=" + APIKey;
+    $.ajax({
+        url: queryforecastURL,
+        method: "GET"
+    }).then(function (response) {
+        for (i = 0; i < 5; i++) {
+            var date = new Date((response.list[((i + 1) * 8) - 1].dt) * 1000).toLocaleDateString();
+            var iconcode = response.list[((i + 1) * 8) - 1].weather[0].icon;
+            var iconurl = "https://openweathermap.org/img/wn/" + iconcode + ".png";
+            var tempK = response.list[((i + 1) * 8) - 1].main.temp;
+            var tempF = (((tempK - 273.5) * 1.80) + 32).toFixed(2);
+            var humidity = response.list[((i + 1) * 8) - 1].main.humidity;
+
+            $("#fDate" + i).html(date);
+            $("#fImg" + i).html("<img src=" + iconurl + ">");
+            $("#fTemp" + i).html(tempF + "&#8457");
+            $("#fHumidity" + i).html(humidity + "%");
+        }
+    });
+
 }
