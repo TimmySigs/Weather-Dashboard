@@ -10,7 +10,7 @@ var currentWindSpeed = $("#wind-speed")
 var currentUvIndex = $("#uv-index")
 var sCity = [];
 
-var APIKey = "a0aca8a89948154a4182dcecc780b513";
+var APIKey = "2abc5837fd5b80301226820c26666c91";
 
 function displayWeather(event) {
     event.preventDefault();
@@ -21,12 +21,12 @@ function displayWeather(event) {
 }
 
 function currentWeather(city) {
-    var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&APPID=" + APIKey;
+    var queryURL = "https://api.openweathermap.org/data/3.0/onecall?" + city + "&APPID=" + APIKey;
     $.ajax({
         url: queryURL,
         method: "GET",
     }).then(function (response) {
-
+        console.log(response);
         var weatherIcon = response.weather[0].icon;
         var iconUrl = "https://openweathermap.org/img/wn/" + weathericon + "@2x.png";
         $(currentCity).html(response.name + "(" + date + ")" + "<img src=" + iconUrl + ">");
@@ -37,6 +37,25 @@ function currentWeather(city) {
         var windMph = (ws * 2.237).toFixed(1)
         $(currentWindSpeed).html(windMph + "Mph")
 
+
+        currentUvIndex(response.coord.lon, response.coord.lat);
+        forecast(response.id)
+        if (response.cod == 200) {
+            sCity = JSON.parse(localStorage.getItem("cityname"));
+            if (sCity == null) {
+                sCity = []
+                sCity.push(city.toUpperCase());
+                localStorage.setItem("cityname", JSON.stringify(sCity))
+                addToList(city)
+            }
+            else {
+                if (find(city) > 0) {
+                    sCity.push(city.toUpperCase())
+                    localStorage.setItem("cityname", JSON.stringify(sCity))
+                    addToList(city)
+                }
+            }
+        }
 
     });
 }
