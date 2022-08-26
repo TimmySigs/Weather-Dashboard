@@ -71,7 +71,7 @@ function UVIndex(ln, lt) {
 }
 
 function forecast(cityid) {
-    var dayover = false;
+    var dayOver = false;
     var queryforecastURL = "https://api.openweathermap.org/data/2.5/forecast?id?q=" + cityid + "&appid=" + APIKey;
     $.ajax({
         url: queryforecastURL,
@@ -110,10 +110,29 @@ function invokePastSearch(event) {
     }
 
 }
+function loadLastCity() {
+    $("ul").empty();
+    var sCity = JSON.parse(localStorage.getItem("cityname"));
+    if (sCity !== null) {
+        sCity = JSON.parse(localStorage.getItem("cityname"));
+        for (i = 0; i < sCity.length; i++) {
+            addToList(sCity[i]);
+        }
+        city = sCity[i - 1];
+        currentWeather(city);
+    }
 
+}
+function clearHistory(event) {
+    event.preventDefault();
+    sCity = [];
+    localStorage.removeItem("cityname");
+    document.location.reload();
+
+}
 
 $("#search-button").on("click", displayWeather);
 $(document).on("click", invokePastSearch);
-$(window).on("load", loadlastCity);
+$(window).on("load", loadLastCity);
 $("#clear-history").on("click", clearHistory);
 
