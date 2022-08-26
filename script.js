@@ -27,8 +27,8 @@ function currentWeather(city) {
         method: "GET",
     }).then(function (response) {
         console.log(response);
-        var weatherIcon = response.weather[0].icon;
-        var iconUrl = "https://openweathermap.org/img/wn/" + weathericon + "@2x.png";
+        // var weatherIcon = response.weather[0].icon;
+        // var iconUrl = "https://openweathermap.org/img/wn/10d@2x.png" + weatherIcon + "@2x.png";
         $(currentCity).html(response.name + "(" + date + ")" + "<img src=" + iconUrl + ">");
 
         $(currentTemperature).html(response.main.humidty + "%");
@@ -61,7 +61,7 @@ function currentWeather(city) {
 }
 
 function UVIndex(ln, lt) {
-    var uvqURL = "https://api.openweathermap.org/data/3.0/uvi?appid=" + APIKey + "&lat=" + lt + "&lon=" + ln;
+    var uvqURL = "https://api.openweathermap.org/data/3.0/uvi?appid?q=" + APIKey + "&lat=" + lt + "&lon=" + ln;
     $.ajax({
         url: uvqURL,
         method: "GET"
@@ -72,7 +72,7 @@ function UVIndex(ln, lt) {
 
 function forecast(cityid) {
     var dayover = false;
-    var queryforecastURL = "https://api.openweathermap.org/data/2.5/forecast?id=" + cityid + "&appid=" + APIKey;
+    var queryforecastURL = "https://api.openweathermap.org/data/2.5/forecast?id?q=" + cityid + "&appid=" + APIKey;
     $.ajax({
         url: queryforecastURL,
         method: "GET"
@@ -93,3 +93,17 @@ function forecast(cityid) {
     });
 
 }
+
+function addToList(c) {
+    var listEl = $("<li>" + c.toUpperCase() + "</li>");
+    $(listEl).attr("class", "list-group-item");
+    $(listEl).attr("data-value", c.toUpperCase());
+    $(".list-group").append(listEl);
+}
+currentWeather("London")
+
+$("#search-button").on("click", displayWeather);
+$(document).on("click", invokePastSearch);
+$(window).on("load", loadlastCity);
+$("#clear-history").on("click", clearHistory);
+
