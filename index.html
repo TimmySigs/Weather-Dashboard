@@ -49,6 +49,9 @@
             <div id="weatherContent" class="col-9 pb-4 pt-4">
                 <div class="row pb-3 mr-2 ml-2">
                     <div id="cityDetail" class="col-12 border rounded px-3 py-3">
+                        <h3 id="display-date"></h3>
+                        <div id="icon"><img id="wicon" src="http://openweathermap.org/img/wn/10d@2x.png"
+                                alt="Weather icon"></div>
                         <p>Temperature:<span class="current" id="temperature"></span></p>
                         <p>Humidity:<span class="current" id="humidity"></span></p>
                         <p>Wind Speed:<span class="current" id="wind-speed"></span></p>
@@ -110,11 +113,11 @@
         crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.js"
         integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.5/dayjs.min.js"></script>
+    <script src="https://unpkg.com/dayjs@1.8.21/plugin/advancedFormat.js"></script>
+    <script>dayjs.extend(window.dayjs_plugin_advancedFormat)</script>
     <script src="script.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/plugin/utc.js"></script>
-    <script>dayjs.extend(window.dayjs_plugin_utc)</script>
-    <script> src = "https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.5/dayjs.min.js"</script>
 </body>
 
 </html>

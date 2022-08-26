@@ -10,7 +10,20 @@ var currentWindSpeed = $("#wind-speed")
 var currentUvIndex = $("#uv-index")
 var sCity = [];
 
+var a = dayjs().format('dddd MMMM Do YYYY, h:mm');
+$("#display-date").text(a)
+
+
 var APIKey = "b26f77a0f941976c50cef7bdb9d7f15d";
+
+function find(c) {
+    for (var i = 0; i < sCity.length; i++) {
+        if (c.toUpperCase() === sCity[i]) {
+            return -1;
+        }
+    }
+    return 1;
+}
 
 function displayWeather(event) {
     event.preventDefault();
@@ -27,12 +40,13 @@ function currentWeather(city) {
         method: "GET",
     }).then(function (response) {
         console.log(response);
-        // var weatherIcon = response.weather[0].icon;
-        // var iconUrl = "https://openweathermap.org/img/wn/10d@2x.png" + weatherIcon + "@2x.png";
+        var iconCode = response.weather[0].icon;
+        var iconUrl = "http://openweathermap.org/img/w/" + iconCode + ".png";
+        $('#wicon').attr('src', iconUrl);
         $(currentCity).html(response.name + "(" + date + ")" + "<img src=" + iconUrl + ">");
 
         $(currentTemperature).html(response.main.humidty + "%");
-
+        // var date = new Date(response.dt * 1000).toLocaleDateString();
         var ws = response.wind.speed
         var windMph = (ws * 2.237).toFixed(1)
         $(currentWindSpeed).html(windMph + "Mph")
@@ -80,7 +94,7 @@ function forecast(cityid) {
         for (i = 0; i < 5; i++) {
             var date = new Date((response.list[((i + 1) * 8) - 1].dt) * 1000).toLocaleDateString();
             var iconcode = response.list[((i + 1) * 8) - 1].weather[0].icon;
-            var iconurl = "https://openweathermap.org/img/wn/" + iconcode + ".png";
+            var iconurl = "https://http://openweathermap.org/img/wn/10d@2x.png" + iconcode + ".png";
             var tempK = response.list[((i + 1) * 8) - 1].main.temp;
             var tempF = (((tempK - 273.5) * 1.80) + 32).toFixed(2);
             var humidity = response.list[((i + 1) * 8) - 1].main.humidity;
@@ -100,7 +114,7 @@ function addToList(c) {
     $(listEl).attr("data-value", c.toUpperCase());
     $(".list-group").append(listEl);
 }
-currentWeather("London")
+currentWeather("Chicago")
 
 function invokePastSearch(event) {
     var liEl = event.target;
