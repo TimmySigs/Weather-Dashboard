@@ -102,6 +102,16 @@ function addToList(c) {
 }
 currentWeather("London")
 
+function invokePastSearch(event) {
+    var liEl = event.target;
+    if (event.target.matches("li")) {
+        city = liEl.textContent.trim();
+        currentWeather(city);
+    }
+
+}
+
+
 $("#search-button").on("click", displayWeather);
 $(document).on("click", invokePastSearch);
 $(window).on("load", loadlastCity);
